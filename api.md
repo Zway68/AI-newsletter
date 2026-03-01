@@ -82,7 +82,6 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     "emails": [
       {
         "id": "uuid",
-        "sub_id": "sub_1",
         "subject": "Your Daily AI News",
         "sent_at": "2023-10-27T10:00:00Z"
       }
@@ -99,7 +98,6 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
   ```json
   {
     "id": "uuid",
-    "sub_id": "sub_1",
     "subject": "Your Daily AI News",
     "sent_at": "2023-10-27T10:00:00Z",
     "html_content": "<html><body><h2>AI Safety Update</h2><p>...</p></body></html>",

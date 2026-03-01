@@ -65,7 +65,6 @@ data/
 
 ### history_email.json
 - `id`: UUID (Email ID)
-- `sub_id`: String (Reference to the generating subscription)
 - `subject`: String
 - `html_content`: String
 - `text_content`: String
