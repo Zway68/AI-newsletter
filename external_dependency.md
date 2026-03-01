@@ -19,9 +19,11 @@ To deploy and run the AI-Newsletter system on the GCP VM, you will need to provi
 - **Required Keys**: `OPENAI_API_KEY` or `GEMINI_API_KEY`.
 
 ## 3. News Aggregation API
-- **Service**: GNews API or NewsAPI.org (refer to `research.md`).
-- **Requirement**: Developer API Key for searching current events and top headlines.
-- **Required Keys**: `NEWS_API_KEY`.
+- **Service**: GNews API
+- **Description**: Chosen for its high-quality snippets, "top headlines" feature, and straightforward search capabilities without requiring complex scraping.
+- **Requirement**: Developer API Key.
+    - Free Tier limit: 100 requests per day (sufficient for testing and low-volume cron jobs).
+- **Required Keys**: `GNEWS_API_KEY` (instead of generic `NEWS_API_KEY`).
 
 ## 4. Email Delivery Service
 - **Service**: SendGrid, Postmark, Mailgun, or Resend.
@@ -47,7 +49,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 LLM_API_KEY=your_openai_or_gemini_key
 
 # News
-NEWS_API_KEY=your_news_api_key
+GNEWS_API_KEY=your_gnews_api_key
 
 # Delivery
 EMAIL_API_KEY=your_email_service_key
