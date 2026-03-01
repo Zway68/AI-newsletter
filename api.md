@@ -36,12 +36,12 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     "email": "user@example.com",
     "subscriptions": [
       {
-        "id": "sub_1",
+        "id": "123e4567-e89b-12d3-a456-426614174000",
         "prompt": "AI Safety, recent LLM wrapper startups",
         "frequency": "DAILY"
       },
       {
-        "id": "sub_2",
+        "id": "987fcdeb-51a2-43d7-9012-3456789abcde",
         "prompt": "Updates on SpaceX and NASA missions",
         "frequency": "WEEKLY"
       }
@@ -57,7 +57,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
   {
     "subscriptions": [
       {
-        "id": "sub_1",
+        "id": "123e4567-e89b-12d3-a456-426614174000",
         "prompt": "Only focus on AI Safety from now on.",
         "frequency": "WEEKLY"
       }
@@ -71,8 +71,9 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 ## 3. Email History
 
 ### `GET /api/v1/history_email`
-- **Description**: Retrieves a list of recently sent newsletter emails. Requires query parameters for time windows to filter the list.
+- **Description**: Retrieves a list of recently sent newsletter emails. Requires query parameters for user_id and time windows to filter the list.
 - **Query Parameters**:
+  - `user_id` (required): UUID of the user
   - `start_date` (required): ISO 8601 timestamp (e.g., `2023-10-01T00:00:00Z`)
   - `end_date` (required): ISO 8601 timestamp (e.g., `2023-10-31T23:59:59Z`)
 - **Headers**: `Authorization: Bearer <Token>`
@@ -93,6 +94,8 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 - **Description**: Read operation. Retrieves the full content of a specific sent email.
 - **Path Parameters**:
   - `id`: The UUID of the email.
+- **Query Parameters**:
+  - `user_id` (required): UUID of the user
 - **Headers**: `Authorization: Bearer <Token>`
 - **Response**: `200 OK`
   ```json

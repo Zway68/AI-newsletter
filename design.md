@@ -59,7 +59,7 @@ data/
 - `user_id`: UUID
 - `email`: String
 - `subscriptions`: List[Subscription]
-  - `id`: String (Unique identifier for the subscription)
+  - `id`: UUID (Unique identifier for the subscription)
   - `prompt`: String (up to 100 words outlining reading interests)
   - `frequency`: Enum (DAILY, WEEKLY, MONTHLY)
 
