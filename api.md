@@ -33,7 +33,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 - **Response**: `200 OK`
   ```json
   {
-    "interests": ["AI Safety", "Space Exploration"],
+    "prompt": "AI Safety, recent LLM wrapper startups, space exploration",
     "frequency": "DAILY",
     "email": "user@example.com"
   }
@@ -45,7 +45,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 - **Payload**:
   ```json
   {
-    "interests": ["AI Safety"],
+    "prompt": "Only focus on AI Safety from now on.",
     "frequency": "WEEKLY"
   }
   ```
@@ -53,44 +53,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 
 ---
 
-## 3. Conversational Interface (Command Center)
-*The core interface for managing settings via natural language.*
-
-### `POST /api/v1/chat`
-- **Description**: Processes a user's natural language command, uses the LLM to parse the intent, and applies changes to the `config.json` if necessary.
-- **Headers**: `Authorization: Bearer <Token>`
-- **Payload**:
-  ```json
-  {
-    "message": "Stop sending me space news and change my frequency to monthly."
-  }
-  ```
-- **Response**: `200 OK`
-  ```json
-  {
-    "reply": "I've removed space news from your interests and set your delivery to monthly.",
-    "action_taken": "CONFIG_UPDATED",
-    "current_config": {
-      "interests": ["AI Safety"],
-      "frequency": "MONTHLY"
-    }
-  }
-  ```
-
-### `POST /api/v1/chat/undo`
-- **Description**: Reverts the last configuration change made via the chat interface by pulling from the `version_history` in `config.json`.
-- **Headers**: `Authorization: Bearer <Token>`
-- **Response**: `200 OK`
-  ```json
-  {
-    "reply": "Your previous settings have been restored.",
-    "restored_config": { ... }
-  }
-  ```
-
----
-
-## 4. History and Lessons
+## 3. History
 
 ### `GET /api/v1/history`
 - **Description**: Retrieves the list of recently sent newsletter items for the user (reads from `history.json`).
@@ -107,15 +70,3 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     ]
   }
   ```
-
-### `POST /api/v1/lessons`
-- **Description**: Allows a user to report a redundancy or error, writing a correction to the global `lesson_library.json`.
-- **Headers**: `Authorization: Bearer <Token>`
-- **Payload**:
-  ```json
-  {
-    "error_type": "REDUNDANCY",
-    "description": "You sent me this exact article yesterday."
-  }
-  ```
-- **Response**: `201 Created`

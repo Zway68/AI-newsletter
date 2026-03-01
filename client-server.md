@@ -40,8 +40,8 @@ sequenceDiagram
     
     %% 3. Writing Data
     Note over User, FS: 3. Updating User Settings (Write)
-    User->>Server: POST /api/v1/config [Payload: updated interests/frequency]
-    Server->>Server: Validate Payload schema
+    User->>Server: POST /api/v1/config [Payload: updated prompt/frequency]
+    Server->>Server: Validate Payload schema (e.g. prompt limit)
     Server->>FS: Write "data/users/$user_id/config.json"
     FS-->>Server: Write Success
     Server-->>User: 200 OK [Settings Saved]
