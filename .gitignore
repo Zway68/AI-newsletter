@@ -108,3 +108,10 @@ yarn-error.log*
 
 # macOS
 .DS_Store
+
+# Bazel
+bazel-*
+bazel-bin/
+bazel-out/
+bazel-testlogs/
+bazel-workspace/

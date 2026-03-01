@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Newsletter Configuration Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div class="glass-bg"></div>
+        <main class="container">
+            <header>
+                <h1>AI Newsletter</h1>
+                <p>Personalize your news streams down to the prompt.</p>
+                <div v-if="!isLoggedIn" class="auth-section">
+                    <button @click="login" class="btn primary">Login with Google</button>
+                    <!-- Mocking google login for MVP -->
+                </div>
+                <div v-else class="user-info">
+                    <span>Welcome, {{ email }}</span>
+                    <button @click="logout" class="btn outline">Logout</button>
+                </div>
+            </header>
+            
+            <section v-if="isLoggedIn" class="sub-section">
+                <div class="header-action">
+                    <h2>Your Subscriptions</h2>
+                    <button @click="addSubscription" class="btn outline">+ Add Target</button>
+                </div>
+                
+                <div class="card-grid">
+                    <div v-for="(sub, index) in subscriptions" :key="sub.id" class="card glass-card" :style="{animationDelay: index * 0.1 + 's'}">
+                        <div class="card-header">
+                            <input v-model="sub.name" placeholder="Subscription Name" class="input raw-title">
+                            <button @click="removeSubscription(index)" class="close-btn">&times;</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Prompt Focus</label>
+                            <textarea v-model="sub.prompt" rows="3" placeholder="e.g. AI safety and latest LLMs" class="input"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Frequency</label>
+                            <select v-model="sub.frequency" class="input">
+                                <option value="DAILY">Daily</option>
+                                <option value="WEEKLY">Weekly</option>
+                                <option value="MONTHLY">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="subscriptions.length > 0" class="actions-footer">
+                    <button @click="saveSettings" class="btn primary save-btn">Save Configurations</button>
+                </div>
+                
+                <div v-if="saveMessage" class="toast slide-up">{{ saveMessage }}</div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

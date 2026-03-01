@@ -7,12 +7,12 @@ description: Rules for managing Python and JavaScript dependencies
 
 When working on this project (AI-newsletter), you MUST strictly use the following package managers for their respective languages:
 
-## 1. Python: Conda
-- **Always** use `conda` for managing Python environments and dependencies.
-- **Do not** use `virtualenv`, `venv`, or `poetry`.
-- The environment configuration is stored in `env/environment.yml`.
-- To install new packages, update the `env/environment.yml` file and then run `./install.sh` to apply the changes (or use `conda env update --file env/environment.yml --prune`).
-- **CRITICAL EXECUTION RULE**: Whenever running Python scripts or tests, you MUST use `conda run -n ai-newsletter --no-capture-output python <script.py>` or the equivalent utility command, rather than activating the environment manually or using the global `python` executable.
+## 1. Python: Pip & Bazel
+- **Always** use `pip` and manage dependencies via `requirements.txt`.
+- **Do not** use `conda`, `virtualenv`, or `poetry`.
+- The environment and third-party dependencies are strictly managed by Bazel via `MODULE.bazel`.
+- To install new packages, add them to `requirements.txt` at the root of the workspace.
+- **CRITICAL EXECUTION RULE**: Whenever running Python scripts or tests, you MUST use Bazel. Do not invoke the global `python` executable. Use `bazelisk run //path/to:target` or `bazelisk test //path/to:target`.
 
 ## 2. JavaScript: NPM
 - **Always** use `npm` for managing JavaScript/Node.js dependencies.

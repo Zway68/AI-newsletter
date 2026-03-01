@@ -1,0 +1,14 @@
+load("@rules_python//python:defs.bzl", "py_test")
+load("@pip//:requirements.bzl", "requirement")
+
+py_test(
+    name = "js_tests",
+    srcs = ["test_frontend.py"],
+    data = [
+        "//frontend:all_files",
+    ],
+    main = "test_frontend.py",
+    deps = [
+        requirement("pytest"),
+    ],
+)
