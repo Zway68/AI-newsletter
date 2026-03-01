@@ -13,7 +13,7 @@ graph TD
     
     subgraph Core Engine
         Aggregator[News Aggregator/API] --> Validator[Deduplication Engine]
-        Validator <--> History[(data/users/$user_id/history.json)]
+        Validator <--> HistoryEmail[(data/users/$user_id/history_email.json)]
     end
     
     Backend <--> CoreEngine
@@ -27,8 +27,8 @@ graph TD
 
 ### 2.1 Deduplication Engine (The "Memory" Layer)
 To solve the repetition problem, we implement a multi-stage filter:
-1.  **Vector Store Semantic Search**: Every potential news snippet is converted into a vector embedding. Before including it in a newsletter, we perform a similarity search against the `sent_history.json`. If the cosine similarity exceeds a threshold (e.g., 0.85), it's rejected.
-2.  **Canonical URL Tracking**: Store unique identifiers (URLs/IDs) of all summarized articles in `sent_history.json`.
+1.  **Vector Store Semantic Search**: Every potential news snippet is converted into a vector embedding. Before including it in a newsletter, we perform a similarity search against the articles embedded in `history_email.json`. If the cosine similarity exceeds a threshold (e.g., 0.85), it's rejected.
+2.  **Canonical URL Tracking**: Store unique identifiers (URLs/IDs) of all summarized articles in `history_email.json`.
 3.  **LLM Cross-Check**: The LLM is provided with a list of "Topics covered in the last [X] days" in its context window to ensure thematic variety.
 
 ### 2.2 Configuration Interface
@@ -48,24 +48,30 @@ To solve the repetition problem, we implement a multi-stage filter:
 data/
 ├── users/
 │   ├── {user_id_A}/
-│   │   ├── config.json       (Custom Prompt, Frequency)
-│   │   └── history.json      (Sent Content History, Embeddings)
+│   │   ├── config.json             (Subscriptions: Custom Prompts, Frequencies)
+│   │   └── history_email.json      (Sent Emails, Full Content, Embeddings)
 │   └── {user_id_B}/
 │       ├── config.json
-│       └── history.json
+│       └── history_email.json
 ```
 
 ### config.json
 - `user_id`: UUID
 - `email`: String
-- `prompt`: String (up to 100 words outlining reading interests)
-- `frequency`: Enum (DAILY, WEEKLY, MONTHLY)
+- `subscriptions`: List[Subscription]
+  - `id`: String (Unique identifier for the subscription)
+  - `prompt`: String (up to 100 words outlining reading interests)
+  - `frequency`: Enum (DAILY, WEEKLY, MONTHLY)
 
-### history.json
-- `content_id`: UUID
-- `payload_hash`: String (for fast exact match)
-- `embedding`: Vector
+### history_email.json
+- `id`: UUID (Email ID)
+- `sub_id`: String (Reference to the generating subscription)
+- `subject`: String
+- `html_content`: String
+- `text_content`: String
 - `sent_at`: Timestamp
+- `article_embeddings`: List[Vector] (For deduplication memory)
+- `article_urls`: List[String] (For fast exact match filtering)
 
 ## 4. Error Handling
 - **Transaction Logs**: Every newsletter sent is logged locally. If a "Daily" fails, the system logs the error to `errors.log`.

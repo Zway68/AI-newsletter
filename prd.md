@@ -9,9 +9,10 @@ A multi-user personalized newsletter platform where users define their interests
 - **Google Login**: Users authenticate using their Google accounts (OAuth 2.0) for a seamless sign-up/sign-in experience.
 
 ### 2.2 Newsletter Configuration
-- **Prompt-Based Interests**: Users define what they want to read about using a direct text prompt (up to 100 words) (e.g., "I want updates on AI safety, recent LLM wrapper startups, and space exploration").
-- **Delivery Management**: Users can modify their frequency, set delivery windows, or pause subscriptions via a simple web dashboard.
-- **History Access**: Users can view the history of newsletters sent to them via the web application.
+- **Multiple Subscriptions**: Users can create multiple distinct news subscriptions (each acting as an independent news aggregator target).
+- **Prompt-Based Interests**: For each subscription, users define what they want to read about using a direct text prompt (up to 100 words) (e.g., "I want updates on AI safety, recent LLM wrapper startups, and space exploration").
+- **Delivery Management**: Each subscription can have its own frequency (e.g., Daily, Weekly), delivery window, or be paused via a simple web dashboard.
+- **Email History**: Users can browse a list of past emails they received within specific time windows, and read the full content of any past email directly in the web app.
 
 ### 2.3 Newsletter Delivery
 - **Three Modes**:

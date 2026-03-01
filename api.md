@@ -33,40 +33,76 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
 - **Response**: `200 OK`
   ```json
   {
-    "prompt": "AI Safety, recent LLM wrapper startups, space exploration",
-    "frequency": "DAILY",
-    "email": "user@example.com"
+    "email": "user@example.com",
+    "subscriptions": [
+      {
+        "id": "sub_1",
+        "prompt": "AI Safety, recent LLM wrapper startups",
+        "frequency": "DAILY"
+      },
+      {
+        "id": "sub_2",
+        "prompt": "Updates on SpaceX and NASA missions",
+        "frequency": "WEEKLY"
+      }
+    ]
   }
   ```
 
 ### `PUT /api/v1/config`
-- **Description**: Directly updates the user's newsletter configuration.
+- **Description**: Updates the user's newsletter configurations (overwrites existing subscription list).
 - **Headers**: `Authorization: Bearer <Token>`
 - **Payload**:
   ```json
   {
-    "prompt": "Only focus on AI Safety from now on.",
-    "frequency": "WEEKLY"
+    "subscriptions": [
+      {
+        "id": "sub_1",
+        "prompt": "Only focus on AI Safety from now on.",
+        "frequency": "WEEKLY"
+      }
+    ]
   }
   ```
 - **Response**: `200 OK` - Returns the updated configuration.
 
 ---
 
-## 3. History
+## 3. Email History
 
-### `GET /api/v1/history`
-- **Description**: Retrieves the list of recently sent newsletter items for the user (reads from `history.json`).
+### `GET /api/v1/history_email`
+- **Description**: Retrieves a list of recently sent newsletter emails. Requires query parameters for time windows to filter the list.
+- **Query Parameters**:
+  - `start_date` (required): ISO 8601 timestamp (e.g., `2023-10-01T00:00:00Z`)
+  - `end_date` (required): ISO 8601 timestamp (e.g., `2023-10-31T23:59:59Z`)
 - **Headers**: `Authorization: Bearer <Token>`
 - **Response**: `200 OK`
   ```json
   {
-    "history": [
+    "emails": [
       {
-        "content_id": "uuid",
-        "sent_at": "2023-10-27T10:00:00Z",
-        "topic": "AI Release"
+        "id": "uuid",
+        "sub_id": "sub_1",
+        "subject": "Your Daily AI News",
+        "sent_at": "2023-10-27T10:00:00Z"
       }
     ]
+  }
+  ```
+
+### `GET /api/v1/history_email/{id}`
+- **Description**: Read operation. Retrieves the full content of a specific sent email.
+- **Path Parameters**:
+  - `id`: The UUID of the email.
+- **Headers**: `Authorization: Bearer <Token>`
+- **Response**: `200 OK`
+  ```json
+  {
+    "id": "uuid",
+    "sub_id": "sub_1",
+    "subject": "Your Daily AI News",
+    "sent_at": "2023-10-27T10:00:00Z",
+    "html_content": "<html><body><h2>AI Safety Update</h2><p>...</p></body></html>",
+    "text_content": "AI Safety Update..."
   }
   ```
