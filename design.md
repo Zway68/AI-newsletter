@@ -6,7 +6,7 @@ The system is designed for simplicity, intended to run on a single Google Cloud 
 
 ```mermaid
 graph TD
-    User((User)) -- "Google OAuth" --> UI[Web/App Chat Interface]
+    User[-User-] -- "Google OAuth" --> UI[Web/App Chat Interface]
     UI <--> Backend[FastAPI/Node.js Logic]
     Backend <--> Prefs[(data/users/$user_id/config.json)]
     Backend <--> LLM[LLM Engine: GPT/Gemini]
@@ -21,7 +21,7 @@ graph TD
     CoreEngine --> EmailService[Email Delivery: SendGrid/Postmark]
     EmailService --> User
     
-    Cron[Linux Cron Job (GCP VM)] --> CoreEngine
+    Cron[Linux Cron Job -GCP VM-] --> CoreEngine
 ```
 
 ## 2. Component Details
