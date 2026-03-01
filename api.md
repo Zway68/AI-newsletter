@@ -37,11 +37,13 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     "subscriptions": [
       {
         "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Daily Tech Digest",
         "prompt": "AI Safety, recent LLM wrapper startups",
         "frequency": "DAILY"
       },
       {
         "id": "987fcdeb-51a2-43d7-9012-3456789abcde",
+        "name": "Space & Science Weekly",
         "prompt": "Updates on SpaceX and NASA missions",
         "frequency": "WEEKLY"
       }
@@ -58,6 +60,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     "subscriptions": [
       {
         "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Daily Tech Digest",
         "prompt": "Only focus on AI Safety from now on.",
         "frequency": "WEEKLY"
       }
@@ -83,6 +86,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
     "emails": [
       {
         "id": "uuid",
+        "sub_id": "123e4567-e89b-12d3-a456-426614174000",
         "subject": "Your Daily AI News",
         "sent_at": "2023-10-27T10:00:00Z"
       }
@@ -101,6 +105,7 @@ This document outlines the REST API endpoints to be exposed by the FastAPI backe
   ```json
   {
     "id": "uuid",
+    "sub_id": "123e4567-e89b-12d3-a456-426614174000",
     "subject": "Your Daily AI News",
     "sent_at": "2023-10-27T10:00:00Z",
     "html_content": "<html><body><h2>AI Safety Update</h2><p>...</p></body></html>",

@@ -72,11 +72,13 @@ data/
 - `email`: String
 - `subscriptions`: List[Subscription]
   - `id`: UUID (Unique identifier for the subscription)
+  - `name`: String (User-facing title for the subscription)
   - `prompt`: String (up to 100 words outlining reading interests)
   - `frequency`: Enum (DAILY, WEEKLY, MONTHLY)
 
 ### history_email.json
 - `id`: UUID (Email ID)
+- `sub_id`: UUID (Reference to the generating subscription)
 - `subject`: String
 - `html_content`: String
 - `text_content`: String
