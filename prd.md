@@ -5,7 +5,10 @@ A multi-user personalized newsletter platform that allows users to manage their 
 
 ## 2. Core Features
 
-### 2.1 Conversational Command Center
+### 2.1 Authentication
+- **Google Login**: Users authenticate using their Google accounts (OAuth 2.0) for a seamless sign-up/sign-in experience.
+
+### 2.2 Conversational Command Center
 - **Interface**: A GPT-like chat interface where users can:
   - Define interests (e.g., "I want updates on AI safety and space exploration").
   - Modify frequency or content (e.g., "Stop sending the space news for now").

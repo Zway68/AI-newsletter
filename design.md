@@ -1,12 +1,12 @@
 # Technical Design: AI-Powered Smart Newsletter System (Simplified)
 
-## 1. System Architecture (Local-First)
+## 1. System Architecture (GCP Local-First)
 
-The system is designed for simplicity, using local file system storage and native macOS task scheduling.
+The system is designed for simplicity, intended to run on a single Google Cloud Platform (GCP) Virtual Machine (VM). It uses local file system storage for data and native Linux `cron` for task scheduling.
 
 ```mermaid
 graph TD
-    User((User)) <--> UI[Web/App Chat Interface]
+    User((User)) -- "Google OAuth" --> UI[Web/App Chat Interface]
     UI <--> Backend[FastAPI/Node.js Logic]
     Backend <--> Prefs[(data/users/$user_id/config.json)]
     Backend <--> LLM[LLM Engine: GPT/Gemini]
@@ -21,7 +21,7 @@ graph TD
     CoreEngine --> EmailService[Email Delivery: SendGrid/Postmark]
     EmailService --> User
     
-    Cron[Local macOS Cron Job] --> CoreEngine
+    Cron[Linux Cron Job (GCP VM)] --> CoreEngine
 ```
 
 ## 2. Component Details
@@ -43,8 +43,8 @@ To solve the repetition problem, we implement a multi-stage filter:
 - **Rollback Mechanism**: Implements an "Event Sourcing" pattern for user settings. Each change is a discrete event. "Undo" simply means reverting to the previous state index in the `version_history`.
 
 ### 2.4 Delivery Pipeline (Simplified)
-- **Scheduling**: Uses local `crontab` on macOS.
-    - **Global Dispatcher**: A recurring task that iterates through all `data/users/` directories and triggers generation based on individual `config.json` frequency settings.
+- **Scheduling**: Uses native Linux `cron` on the GCP VM.
+    - **Global Dispatcher**: A recurring task (`* * * * *` or similar hourly/daily trigger) that iterates through all `data/users/` directories and triggers generation based on individual `config.json` frequency settings and current time.
 - **Synthesizer**:
     - **Daily**: Summarizes raw news.
     - **Weekly/Monthly**: Uses "Recursive Summarization" (summarizing the daily summaries) to maintain context without exceeding token limits.
