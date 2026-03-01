@@ -1,0 +1,35 @@
+name: Bazel Unit Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+        with:
+          activate-environment: ai-newsletter
+          environment-file: env/environment.yml
+          python-version: "3.11"
+          auto-activate-base: false
+
+      - name: Setup Node.js (for frontend)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Frontend NPM Dependencies
+        run: |
+          cd env
+          npm install
+
+      - name: Install Bazelisk
+        run: npm install -g @bazel/bazelisk
+
+      - name: Run Bazel Tests

@@ -111,6 +111,10 @@ yarn-error.log*
 
 # Bazel
 bazel-*
+
+# GitHub Workflows
+!.github/workflows/
+!.github/workflows/bazel-test.yml
 bazel-bin/
 bazel-out/
 bazel-testlogs/
