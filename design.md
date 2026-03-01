@@ -6,19 +6,19 @@ The system is designed for simplicity, using local file system storage and nativ
 
 ```mermaid
 graph TD
-    User((User)) <--> UI["Web/App Chat Interface"]
+    User((User)) <--> UI[Web/App Chat Interface]
     UI <--> Backend[FastAPI/Node.js Logic]
-    Backend <--> Prefs[("data/users/{user_id}/config.json")]
+    Backend <--> Prefs[(data/users/$user_id/config.json)]
     Backend <--> LLM[LLM Engine: GPT/Gemini]
     
     subgraph Core Engine
         Aggregator[News Aggregator/API] --> Validator[Deduplication & Validation Engine]
-        Validator <--> LessonLibrary[("data/lessons/library.json")]
-        Validator <--> History[("data/users/{user_id}/history.json")]
+        Validator <--> LessonLibrary[(data/lessons/library.json)]
+        Validator <--> History[(data/users/$user_id/history.json)]
     end
     
     Backend <--> CoreEngine
-    CoreEngine --> EmailService["Email Delivery: SendGrid/Postmark"]
+    CoreEngine --> EmailService[Email Delivery: SendGrid/Postmark]
     EmailService --> User
     
     Cron[Local macOS Cron Job] --> CoreEngine
