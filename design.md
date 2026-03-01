@@ -42,7 +42,19 @@ To solve the repetition problem, we implement a multi-stage filter:
     - **Daily**: Summarizes raw news.
     - **Weekly/Monthly**: Uses "Recursive Summarization" (summarizing the daily summaries) to maintain context without exceeding token limits.
 
-## 3. Data Model (Local Filesystem Structure)
+## 3. Entity Relationships -UML-
+
+Based on the API spec, the system manages the following core entities:
+
+```mermaid
+erDiagram
+    USER ||--|| CONFIG : "has 1"
+    CONFIG ||--o{ SUBSCRIPTION : "contains 1 to N"
+    USER ||--o{ HISTORY_EMAIL : "receives 0 to N"
+    SUBSCRIPTION ||--o{ HISTORY_EMAIL : "generates 0 to N"
+```
+
+## 4. Data Model -Local Filesystem Structure-
 
 ```text
 data/
