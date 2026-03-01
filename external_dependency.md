@@ -12,7 +12,7 @@ To deploy and run the AI-Newsletter system on the GCP VM, you will need to provi
 - **Required Keys**: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
 
 ## 2. LLM Engine (Summarization & Validation)
-- **Service**: OpenAI (GPT-4o/mini) OR Google AI Studio (Gemini 1.5 Pro/Flash).
+- **Service**: OpenAI (GPT-4o/mini) OR Google AI Studio (Gemini 2.5 Pro/Flash).
 - **Requirement**: Developer API Key.
     - Needs access to standard chat completion endpoints.
     - Needs embedding models (e.g., `text-embedding-3-small` or equivalent) for the deduplication engine.

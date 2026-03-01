@@ -54,7 +54,7 @@ The core constraint for news APIs is the combination of **Requests per day** and
 *   **Cost Structure**: Pay-as-you-go based on tokens.
 *   **Tradeoffs**: `gpt-4o-mini` is extremely cheap and fast, perfect for high-volume summarization. Embeddings (`text-embedding-3-small`) are also highly cost-effective for the deduplication engine.
 
-### Option B: Google Gemini (Gemini 1.5 Flash)
+### Option B: Google Gemini (Gemini 2.5 Flash)
 *   **Cost Structure**: Generous free tier (up to 15 requests per minute, 1M tokens per minute).
 *   **Tradeoffs**:
     *   *Pros*: You can run the summarization engine essentially for free for a small-to-medium user base. Includes massive context windows (good for summarizing a whole month's worth of data).
@@ -64,4 +64,4 @@ The core constraint for news APIs is the combination of **Requests per day** and
 For a cost-effective, multi-user deployment on GCP:
 1.  **News**: **GNews API** (100 req/day is plenty if queries are batched per topic rather than per user).
 2.  **Delivery**: **SendGrid or Resend** (Limits the platform to <100 daily deliveries for free, scaling requires payment).
-3.  **LLM**: **Gemini 1.5 Flash** (Utilize the free API limits to keep processing costs at zero).
+3.  **LLM**: **Gemini 2.5 Flash** (Utilize the free API limits to keep processing costs at zero).
