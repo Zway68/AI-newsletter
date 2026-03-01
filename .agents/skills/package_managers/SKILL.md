@@ -12,6 +12,7 @@ When working on this project (AI-newsletter), you MUST strictly use the followin
 - **Do not** use `virtualenv`, `venv`, or `poetry`.
 - The environment configuration is stored in `env/environment.yml`.
 - To install new packages, update the `env/environment.yml` file and run `conda env update --file env/environment.yml --prune`.
+- **CRITICAL EXECUTION RULE**: Whenever running Python scripts or tests, you MUST use `conda run -n ai-newsletter --no-capture-output python <script.py>` or the equivalent utility command, rather than activating the environment manually or using the global `python` executable.
 
 ## 2. JavaScript: NPM
 - **Always** use `npm` for managing JavaScript/Node.js dependencies.
