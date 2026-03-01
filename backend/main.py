@@ -65,11 +65,36 @@ def read_history_email(email_id: str, user_id: str = Query(...)):
     return email
 
 # Mount frontend
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+def get_frontend_path():
+    try:
+        from python.runfiles import runfiles
+        r = runfiles.Create()
+        # The path in Bazel is <workspace_name>/<path_from_root>
+        # Workspace name is 'ai_newsletter' from MODULE.bazel
+        path = r.Rlocation("ai_newsletter/frontend")
+        if path and os.path.exists(path):
+            return path
+    except ImportError:
+        pass
+    
+    # Fallback to local source tree relative path
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+
+frontend_path = get_frontend_path()
 
 @app.get("/")
-def serve_frontend_index():
+def serve_index():
     return FileResponse(os.path.join(frontend_path, "index.html"))
 
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+@app.get("/index.css")
+def serve_css():
+    return FileResponse(os.path.join(frontend_path, "index.css"))
+
+@app.get("/app.js")
+def serve_js():
+    return FileResponse(os.path.join(frontend_path, "app.js"))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 

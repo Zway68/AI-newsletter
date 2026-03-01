@@ -16,14 +16,15 @@ Bazel isolates its environment. It parses `requirements.txt` via the `pip` exten
 ## Running a Python Program
 Instead of running `python backend/main.py` directly, you run the binary through Bazel. In the `backend/BUILD.bazel` file, there is a `py_binary` target defined as `main`.
 
-To run it:
+To start the API server and serve the frontend:
 ```bash
 bazelisk run //backend:main
 ```
 This command will:
 1. Build the isolated Python environment.
 2. Link the required dependencies (e.g., FastAPI, Uvicorn).
-3. Execute the `main.py` script.
+3. Bundle the frontend static files.
+4. Execute the `main.py` script, starting the server at `http://0.0.0.0:8000`.
 
 ## Running Python Unit Tests
 We use `pytest` wrapped in Bazel `py_test` targets. 

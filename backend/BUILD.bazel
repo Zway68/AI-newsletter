@@ -14,7 +14,10 @@ py_binary(
         ":storage",
         requirement("fastapi"),
         requirement("pydantic"),
+        requirement("uvicorn"),
+        "@rules_python//python/runfiles",
     ],
+    data = ["//frontend:all_files"],
     visibility = ["//visibility:public"],
 )
 
