@@ -2,8 +2,6 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/bazel-bin",
-        "${workspaceFolder}/bazel-out",
-        "${workspaceFolder}/backend",
-        "${workspaceFolder}/frontend"
+        "${workspaceFolder}/bazel-out"
     ]
 }
