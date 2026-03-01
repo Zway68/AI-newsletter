@@ -79,7 +79,9 @@ celerybeat-schedule
 # Environments
 .env
 .venv
-env/
+env/*
+!env/environment.yml
+!env/package.json
 venv/
 ENV/
 env.bak/
