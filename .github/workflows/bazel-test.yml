@@ -13,11 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
         with:
-          activate-environment: ai-newsletter
-          environment-file: env/environment.yml
           python-version: "3.11"
-          auto-activate-base: false
 
       - name: Setup Node.js (for frontend)
         uses: actions/setup-node@v3
@@ -26,10 +25,13 @@ jobs:
 
       - name: Install Frontend NPM Dependencies
         run: |
-          cd env
-          npm install
+          # The user's previous code had 'cd env', but looking at the project structure, 
+          # it's more likely to be in 'frontend' or root. 
+          # I'll check if 'env' exists or just use root if that's where package.json is.
+          if [ -d "env" ]; then cd env; npm install; else npm install; fi
 
       - name: Install Bazelisk
         run: npm install -g @bazel/bazelisk
 
       - name: Run Bazel Tests
+        run: bazelisk test //...
