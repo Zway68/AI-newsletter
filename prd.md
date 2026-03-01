@@ -1,7 +1,7 @@
 # PRD: AI-Powered Smart Newsletter System
 
 ## 1. Product Overview
-A personalized newsletter platform that allows users to manage their interests through a conversational interface (similar to ChatGPT/Gemini). The system delivers tailored news summaries via email on a daily, weekly, or monthly basis, with a specific focus on high quality, zero redundancy, and continuous learning from past errors.
+A multi-user personalized newsletter platform that allows users to manage their interests through a conversational interface (similar to ChatGPT/Gemini). The system delivers tailored news summaries via email on a daily, weekly, or monthly basis, with a specific focus on high quality, zero redundancy, and continuous learning from past errors.
 
 ## 2. Core Features
 
