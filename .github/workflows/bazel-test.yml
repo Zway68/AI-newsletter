@@ -24,11 +24,7 @@ jobs:
           node-version: '18'
 
       - name: Install Frontend NPM Dependencies
-        run: |
-          # The user's previous code had 'cd env', but looking at the project structure, 
-          # it's more likely to be in 'frontend' or root. 
-          # I'll check if 'env' exists or just use root if that's where package.json is.
-          if [ -d "env" ]; then cd env; npm install; else npm install; fi
+        run: npm install
 
       - name: Install Bazelisk
         run: npm install -g @bazel/bazelisk
