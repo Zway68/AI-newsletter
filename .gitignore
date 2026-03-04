@@ -7,26 +7,13 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-bin/
-build/
 develop-eggs/
-dist/
 eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# PyInstaller
-#  Usually these files are written by a python script, and contain the binary number of cells.
-#  Check your project's build directory for more information about your project's layout
-*.manifest
-*.spec
+sdist/
+wheels/
 
 # Installer logs
 pip-log.txt
@@ -47,75 +34,46 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Logs
 *.log
-local_settings.py
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath-related files
-*.sage.py
 
 # Environments
 .env
 .venv
-env/*
-!env/environment.yml
-!env/package.json
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# pyenv
+.python-version
 
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
+# Jupyter Notebook
+.ipynb_checkpoints
 
 # mypy
 .mypy_cache/
+
+# IDE
+.spyderproject
+.spyproject
+.ropeproject
 
 # Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
 
-# macOS
-.DS_Store
+# Angular
+.angular/
+dist/
+dist-test/
 
 # Bazel
 bazel-*
+MODULE.bazel.lock
 
-# GitHub Workflows
-!.github/workflows/
-!.github/workflows/bazel-test.yml
-bazel-bin/
-bazel-out/
-bazel-testlogs/
-bazel-workspace/
+# macOS
+.DS_Store

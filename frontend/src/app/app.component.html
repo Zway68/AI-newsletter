@@ -1,0 +1,52 @@
+<div id="app">
+    <div class="glass-bg"></div>
+    <main class="container">
+        <header>
+            <h1>AI Newsletter</h1>
+            <p>Personalize your news streams down to the prompt.</p>
+            <div *ngIf="!isLoggedIn" class="auth-section">
+                <button (click)="login()" class="btn primary">Login with Google</button>
+            </div>
+            <div *ngIf="isLoggedIn" class="user-info">
+                <span>Welcome, {{ email }}</span>
+                <button (click)="logout()" class="btn outline">Logout</button>
+            </div>
+        </header>
+
+        <section *ngIf="isLoggedIn" class="sub-section">
+            <div class="header-action">
+                <h2>Your Subscriptions</h2>
+                <button (click)="addSubscription()" class="btn outline">+ Add Target</button>
+            </div>
+
+            <div class="card-grid">
+                <div *ngFor="let sub of subscriptions; let i = index" class="card glass-card"
+                    [style.animationDelay]="i * 0.1 + 's'">
+                    <div class="card-header">
+                        <input [(ngModel)]="sub.name" placeholder="Subscription Name" class="input raw-title">
+                        <button (click)="removeSubscription(i)" class="close-btn">&times;</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Prompt Focus</label>
+                        <textarea [(ngModel)]="sub.prompt" rows="3" placeholder="e.g. AI safety and latest LLMs"
+                            class="input"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select [(ngModel)]="sub.frequency" class="input">
+                            <option value="DAILY">Daily</option>
+                            <option value="WEEKLY">Weekly</option>
+                            <option value="MONTHLY">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="subscriptions.length > 0" class="actions-footer">
+                <button (click)="saveSettings()" class="btn primary save-btn">Save Configurations</button>
+            </div>
+
+            <div *ngIf="saveMessage" class="toast slide-up">{{ saveMessage }}</div>
+        </section>
+    </main>
+</div>

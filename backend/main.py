@@ -69,16 +69,22 @@ def get_frontend_path():
     try:
         from python.runfiles import runfiles
         r = runfiles.Create()
-        # The path in Bazel is <workspace_name>/<path_from_root>
-        # Workspace name is 'ai_newsletter' from MODULE.bazel
-        path = r.Rlocation("ai_newsletter/frontend")
+        # When built with Bazel, Angular dist output is at frontend/dist
+        path = r.Rlocation("ai_newsletter/frontend/dist")
         if path and os.path.exists(path):
             return path
     except ImportError:
         pass
     
-    # Fallback to local source tree relative path
-    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+    # Fallback: check for local ng build output
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for candidate in ["dist-test", "frontend/dist"]:
+        path = os.path.join(base_dir, candidate)
+        if os.path.exists(path):
+            return path
+    
+    # Final fallback to raw frontend source (for dev without build)
+    return os.path.join(base_dir, "frontend")
 
 frontend_path = get_frontend_path()
 
@@ -86,13 +92,8 @@ frontend_path = get_frontend_path()
 def serve_index():
     return FileResponse(os.path.join(frontend_path, "index.html"))
 
-@app.get("/index.css")
-def serve_css():
-    return FileResponse(os.path.join(frontend_path, "index.css"))
-
-@app.get("/app.js")
-def serve_js():
-    return FileResponse(os.path.join(frontend_path, "app.js"))
+# Mount remaining static files (Angular hashed bundles)
+app.mount("/", StaticFiles(directory=frontend_path), name="static")
 
 if __name__ == "__main__":
     import uvicorn

@@ -5,7 +5,7 @@ py_test(
     name = "js_tests",
     srcs = ["test_frontend.py"],
     data = [
-        "//frontend:all_files",
+        "//frontend:src_files",
     ],
     main = "test_frontend.py",
     deps = [
