@@ -7,17 +7,31 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
+py_library(
+    name = "auth",
+    srcs = ["auth.py"],
+    deps = [
+        requirement("google-auth"),
+        requirement("requests"),
+    ],
+    visibility = ["//visibility:public"],
+)
+
 py_binary(
     name = "main",
     srcs = ["main.py"],
     deps = [
         ":storage",
+        ":auth",
         requirement("fastapi"),
         requirement("pydantic"),
         requirement("uvicorn"),
+        requirement("python-dotenv"),
         "@rules_python//python/runfiles",
     ],
-    data = ["//frontend:all_files"],
+    data = [
+        "//frontend:all_files",
+        "//:dotenv",
+    ],
     visibility = ["//visibility:public"],
 )
-

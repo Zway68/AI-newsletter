@@ -54,6 +54,13 @@ p {
     gap: 1rem;
 }
 
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+}
+
 .btn {
     padding: 0.8rem 1.5rem;
     border: none;

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+declare const google: any;
 
 @Component({
     selector: 'app-root',
@@ -9,16 +11,101 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
     isLoggedIn = false;
     email = "";
+    name = "";
+    picture = "";
+    userId = "";
+    idToken = "";
     subscriptions: any[] = [];
     saveMessage = "";
+    clientId = "";
 
-    constructor() {
-        const token = localStorage.getItem("auth_token");
-        if (token) {
-            this.login();
+    constructor(private ngZone: NgZone) {
+        // Check for existing session
+        const storedToken = localStorage.getItem("id_token");
+        const storedUser = localStorage.getItem("user_info");
+        if (storedToken && storedUser) {
+            this.idToken = storedToken;
+            const user = JSON.parse(storedUser);
+            this.email = user.email;
+            this.name = user.name;
+            this.picture = user.picture;
+            this.userId = user.user_id;
+            this.isLoggedIn = true;
+            this.fetchConfig();
+        }
+    }
+
+    async ngAfterViewInit() {
+        // Fetch client ID from backend, then render the Google button
+        try {
+            const res = await fetch("/api/v1/auth/client-id");
+            const data = await res.json();
+            this.clientId = data.client_id;
+
+            if (this.clientId && !this.isLoggedIn) {
+                this.renderGoogleButton();
+            }
+        } catch (err) {
+            console.error("Failed to fetch client ID", err);
+        }
+    }
+
+    renderGoogleButton() {
+        // Wait for GSI script to load
+        const tryRender = () => {
+            if (typeof google !== 'undefined' && google.accounts) {
+                google.accounts.id.initialize({
+                    client_id: this.clientId,
+                    callback: (response: any) => {
+                        this.ngZone.run(() => this.handleCredentialResponse(response));
+                    },
+                });
+                const btnContainer = document.getElementById("google-signin-btn");
+                if (btnContainer) {
+                    google.accounts.id.renderButton(btnContainer, {
+                        theme: "filled_blue",
+                        size: "large",
+                        shape: "pill",
+                        text: "signin_with",
+                    });
+                }
+            } else {
+                setTimeout(tryRender, 200);
+            }
+        };
+        tryRender();
+    }
+
+    async handleCredentialResponse(response: any) {
+        const idToken = response.credential;
+        try {
+            const res = await fetch("/api/v1/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+            });
+            if (res.ok) {
+                const user = await res.json();
+                this.idToken = idToken;
+                this.email = user.email;
+                this.name = user.name;
+                this.picture = user.picture;
+                this.userId = user.user_id;
+                this.isLoggedIn = true;
+
+                localStorage.setItem("id_token", idToken);
+                localStorage.setItem("user_info", JSON.stringify(user));
+
+                this.fetchConfig();
+            } else {
+                const err = await res.json();
+                console.error("Auth failed:", err);
+            }
+        } catch (err) {
+            console.error("Failed to authenticate", err);
         }
     }
 
@@ -31,35 +118,38 @@ export class AppComponent {
     }
 
     async fetchConfig() {
-        const token = localStorage.getItem("auth_token");
-        if (!token) return;
+        if (!this.idToken) return;
         try {
-            const res = await fetch("/api/v1/config?user_id=mock-user-id", {
-                headers: { "Authorization": `Bearer ${token}` }
+            const res = await fetch("/api/v1/config", {
+                headers: { "Authorization": `Bearer ${this.idToken}` }
             });
             if (res.ok) {
                 const data = await res.json();
-                this.email = data.email || "user@example.com";
+                this.email = data.email || this.email;
                 this.subscriptions = data.subscriptions || [];
-                this.isLoggedIn = true;
-            } else {
-                this.isLoggedIn = false;
             }
         } catch (err) {
             console.error("Failed to fetch settings", err);
         }
     }
 
-    login() {
-        localStorage.setItem("auth_token", "mock_oauth_token");
-        this.isLoggedIn = true;
-        this.fetchConfig();
-    }
-
     logout() {
-        localStorage.removeItem("auth_token");
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("user_info");
         this.isLoggedIn = false;
         this.subscriptions = [];
+        this.idToken = "";
+        this.email = "";
+        this.name = "";
+        this.userId = "";
+
+        // Also sign out from Google
+        if (typeof google !== 'undefined' && google.accounts) {
+            google.accounts.id.disableAutoSelect();
+        }
+
+        // Re-render the sign-in button
+        setTimeout(() => this.renderGoogleButton(), 100);
     }
 
     addSubscription() {
@@ -76,12 +166,11 @@ export class AppComponent {
     }
 
     async saveSettings() {
-        const token = localStorage.getItem("auth_token");
         try {
-            const res = await fetch("/api/v1/config?user_id=mock-user-id", {
+            const res = await fetch("/api/v1/config", {
                 method: "PUT",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${this.idToken}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ subscriptions: this.subscriptions })

@@ -9,9 +9,11 @@ py_test(
     ],
     deps = [
         "//backend:main",
+        "//backend:auth",
         requirement("pytest"),
         requirement("fastapi"),
         requirement("httpx"),
+        requirement("google-auth"),
     ],
     main = "test_api.py",
 )

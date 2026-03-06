@@ -5,10 +5,11 @@
             <h1>AI Newsletter</h1>
             <p>Personalize your news streams down to the prompt.</p>
             <div *ngIf="!isLoggedIn" class="auth-section">
-                <button (click)="login()" class="btn primary">Login with Google</button>
+                <div id="google-signin-btn"></div>
             </div>
             <div *ngIf="isLoggedIn" class="user-info">
-                <span>Welcome, {{ email }}</span>
+                <img *ngIf="picture" [src]="picture" alt="Profile" class="avatar">
+                <span>Welcome, {{ name || email }}</span>
                 <button (click)="logout()" class="btn outline">Logout</button>
             </div>
         </header>

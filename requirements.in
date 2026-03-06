@@ -5,3 +5,5 @@ requests
 pydantic
 python-dotenv
 httpx
+google-auth
+google-auth-httplib2
