@@ -6,9 +6,3 @@ exports_files([
     "package.json",
     "pnpm-lock.yaml",
 ])
-
-filegroup(
-    name = "dotenv",
-    srcs = [".env"],
-    visibility = ["//visibility:public"],
-)

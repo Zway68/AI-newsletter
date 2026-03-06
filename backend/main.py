@@ -1,20 +1,6 @@
 import os
 from dotenv import load_dotenv
-
-# Load .env — try Bazel runfiles first, then normal lookup
-def _load_env():
-    try:
-        from python.runfiles import runfiles
-        r = runfiles.Create()
-        env_path = r.Rlocation("ai_newsletter/.env")
-        if env_path and os.path.exists(env_path):
-            load_dotenv(env_path)
-            return
-    except ImportError:
-        pass
-    load_dotenv()
-
-_load_env()
+load_dotenv()
 
 from fastapi import FastAPI, Depends, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles

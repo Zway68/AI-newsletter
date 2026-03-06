@@ -29,9 +29,6 @@ py_binary(
         requirement("python-dotenv"),
         "@rules_python//python/runfiles",
     ],
-    data = [
-        "//frontend:all_files",
-        "//:dotenv",
-    ],
+    data = ["//frontend:all_files"],
     visibility = ["//visibility:public"],
 )
